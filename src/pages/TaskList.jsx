@@ -1,6 +1,11 @@
 import Nav from "../components/Nav";
+import { useContext } from "react";
+import { GlobalContext } from "../contexts/GlobalContext";
 
 function TaskList() {
+    const { task } = useContext(GlobalContext);
+    console.log(task);
+
     return (
         <>
             <Nav />
