@@ -1,0 +1,16 @@
+nav {
+    display: flex;
+    justify-content: start;
+    gap: 10px;
+}
+
+nav a {
+    color: black;
+    text-decoration: none;
+}
+
+.active {
+    color: black;
+    text-decoration: underline;
+    font-weight: bold;
+}
