@@ -1,15 +1,34 @@
 import Nav from "../components/Nav";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { GlobalContext } from "../contexts/GlobalContext";
+import TaskRow from "../components/TaskRow";
+
 
 function TaskList() {
-    const { task } = useContext(GlobalContext);
-    console.log(task);
+    // GlobalContext datas
+    const { tasks } = useContext(GlobalContext);
 
     return (
         <>
             <Nav />
-            <h1>TaskList Page</h1>
+            {/* Table section */}
+            <section>
+                <h3>Tasks table</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Status</th>
+                            <th>Created At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {tasks.map((task) => (
+                            <TaskRow key={task.id} task={task} />
+                        ))}
+                    </tbody>
+                </table>
+            </section>
         </>
     )
 }

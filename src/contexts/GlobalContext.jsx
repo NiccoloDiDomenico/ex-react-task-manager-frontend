@@ -6,7 +6,7 @@ export const GlobalContext = createContext();
 
 // create provider 
 export function GlobalProvider({ children }) {
-    const [task, setTasks] = useState([]);
+    const [tasks, setTasks] = useState([]);
 
     useEffect(() => {
         fetch(`${apiUrl}/tasks`)
@@ -16,7 +16,7 @@ export function GlobalProvider({ children }) {
     }, [])
 
     return (
-        <GlobalContext.Provider value={{ task, setTasks }}>
+        <GlobalContext.Provider value={{ tasks, setTasks }}>
             {children}
         </GlobalContext.Provider>
     )
