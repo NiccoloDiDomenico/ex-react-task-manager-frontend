@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext } from "react";
 import useTasks from "../customHooks/useTasks";
 
 // context
@@ -6,10 +6,10 @@ export const GlobalContext = createContext();
 
 // provider 
 export function GlobalProvider({ children }) {
-    const { tasks, setTasks } = useTasks();
+    const taskData = useTasks();
 
     return (
-        <GlobalContext.Provider value={{ tasks, setTasks }}>
+        <GlobalContext.Provider value={{ ...taskData }}>
             {children}
         </GlobalContext.Provider>
     )

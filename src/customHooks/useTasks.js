@@ -11,7 +11,19 @@ function useTasks() {
             .catch((err) => console.error(err))
     }, [])
 
-    return { tasks, setTasks }
+    const addTask = () => {
+        // codice da eseguire
+    }
+
+    const removeTask = () => {
+        // codice da eseguire
+    }
+
+    const updateTask = () => {
+        // codice da eseguire
+    }
+
+    return { tasks, addTask, removeTask, updateTask }
 }
 
 export default useTasks;
