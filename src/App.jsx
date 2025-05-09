@@ -1,7 +1,7 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import TaskList from './pages/TaskList';
-import AddList from './pages/AddTask';
+import AddTask from './pages/AddTask';
 import { GlobalProvider } from './contexts/GlobalContext';
 
 function App() {
@@ -12,7 +12,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<TaskList />}></Route>
-            <Route path="/AddTask" element={<AddList />}></Route>
+            <Route path="/AddTask" element={<AddTask />}></Route>
           </Routes>
         </BrowserRouter>
       </GlobalProvider>
