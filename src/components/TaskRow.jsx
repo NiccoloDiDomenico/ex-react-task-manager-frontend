@@ -10,7 +10,7 @@ function TaskRow({ task }) {
     return (
         <tr key={task.id}>
             <td>{task.title}</td>
-            <td style={{ backgroundColor: statusColors[task.status] }}>{task.status}</td>
+            <td className="status-cell" style={{ backgroundColor: statusColors[task.status] }}>{task.status}</td>
             <td>{new Date(task.createdAt).toLocaleDateString()}</td>
         </tr>
     )

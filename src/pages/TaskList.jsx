@@ -2,19 +2,17 @@ import Nav from "../components/Nav";
 import { useContext, useState } from "react";
 import { GlobalContext } from "../contexts/GlobalContext";
 import TaskRow from "../components/TaskRow";
-
+import '../css/TaskList.css';
 
 function TaskList() {
-    // GlobalContext datas
     const { tasks } = useContext(GlobalContext);
 
     return (
         <>
             <Nav />
-            {/* Table section */}
-            <section>
-                <h3>Tasks table</h3>
-                <table>
+            <div className="table-container">
+                <h1>Task Manager</h1>
+                <table className="tasks-table">
                     <thead>
                         <tr>
                             <th>Title</th>
@@ -28,9 +26,9 @@ function TaskList() {
                         ))}
                     </tbody>
                 </table>
-            </section>
+            </div>
         </>
-    )
+    );
 }
 
 export default TaskList;

@@ -1,16 +1,36 @@
+/* Nav */
 nav {
-    display: flex;
-    justify-content: start;
-    gap: 10px;
+    background-color: #4a90e2;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 nav a {
-    color: black;
+    color: white;
     text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+nav a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .active {
-    color: black;
-    text-decoration: underline;
-    font-weight: bold;
+    background-color: white;
+    color: #4a90e2;
+    font-weight: 600;
+}
+
+.active:hover {
+    background-color: #f8f9fa;
+}
+
+/* Maintain the gap between links */
+nav {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
 }

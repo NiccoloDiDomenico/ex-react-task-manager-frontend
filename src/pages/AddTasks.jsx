@@ -1,6 +1,7 @@
 import { useState, useRef, useMemo, useContext } from 'react';
 import Nav from "../components/Nav";
 import { GlobalContext } from '../contexts/GlobalContext';
+import '../css/AddTasks.css'
 const symbols = `!@#$%^&*()-_=+[]{}|;:'\\",.<>?/"~`;
 
 function AddTask() {
@@ -72,53 +73,53 @@ function AddTask() {
     return (
         <>
             <Nav />
-            <h1>AddTask Page</h1>
-
-            {/* Custom alert */}
             {alert.show && (
                 <div className={`custom-alert ${alert.type}`}>{alert.message}</div>
             )}
 
-            {/* Form section */}
-            <form onSubmit={handleFormSubmit}>
-                {/* Title */}
-                <div>
-                    <label htmlFor="title">Nome</label>
-                    <input
-                        id="title"
-                        type="text"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        className={titleValidation.isValid ? "valid" : "error"}
-                    />
-                </div>
-                {titleValidation.errors.isEmpty && (
-                    <span className='error-message'>{titleValidation.messages.isEmpty}</span>
-                )}
-                {titleValidation.errors.hasSymbols && (
-                    <span className='error-message'>{titleValidation.messages.hasSymbols}</span>
-                )}
-                {/* Description */}
-                <div>
-                    <label htmlFor="description">Descrizione</label>
-                    <textarea
-                        id="description"
-                        ref={descriptionRef}
-                    ></textarea>
-                </div>
-                {/* Status */}
-                <div>
-                    <label htmlFor="status">Stato</label>
-                    <select id="status" ref={statusRef} defaultValue="To do">
-                        <option value="To do">To do</option>
-                        <option value="Doing">Doing</option>
-                        <option value="Done">Done</option>
-                    </select>
-                </div>
-                <button type='submit' disabled={!titleValidation.isValid}>Aggiungi Task</button>
-            </form>
+            <div className="form-container">
+                <h1>Add New Task</h1>
+                <form onSubmit={handleFormSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="title">Nome</label>
+                        <input
+                            id="title"
+                            type="text"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            className={titleValidation.isValid ? "valid" : "error"}
+                        />
+                        {titleValidation.errors.isEmpty && (
+                            <span className='error-message'>{titleValidation.messages.isEmpty}</span>
+                        )}
+                        {titleValidation.errors.hasSymbols && (
+                            <span className='error-message'>{titleValidation.messages.hasSymbols}</span>
+                        )}
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="description">Descrizione</label>
+                        <textarea
+                            id="description"
+                            ref={descriptionRef}
+                        ></textarea>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="status">Stato</label>
+                        <select id="status" ref={statusRef} defaultValue="To do">
+                            <option value="To do">To do</option>
+                            <option value="Doing">Doing</option>
+                            <option value="Done">Done</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" disabled={!titleValidation.isValid}>
+                        Aggiungi Task
+                    </button>
+                </form>
+            </div>
         </>
-    )
+    );
 }
 
 export default AddTask;
