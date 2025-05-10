@@ -11,8 +11,26 @@ function useTasks() {
             .catch((err) => console.error(err))
     }, [])
 
-    const addTask = () => {
-        // codice da eseguire
+    const addTask = async (taskToAdd) => {
+        try {
+            const res = await fetch(`${apiUrl}/tasks`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(taskToAdd)
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                setTasks([...tasks, data.task]);
+            } else {
+                throw new Error(data.message);
+            }
+        } catch (error) {
+            throw error;
+        }
     }
 
     const removeTask = () => {

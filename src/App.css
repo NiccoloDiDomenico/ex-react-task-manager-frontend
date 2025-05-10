@@ -12,3 +12,37 @@
     font-size: 0.8em;
     margin-top: 5px;
 }
+
+/* Alert */
+.custom-alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 4px;
+    animation: slideIn 0.5s ease-out;
+}
+
+.custom-alert.success {
+    background-color: #4caf50;
+    color: white;
+    border-left: 4px solid #45a049;
+}
+
+.custom-alert.error {
+    background-color: #f44336;
+    color: white;
+    border-left: 4px solid #da190b;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}

@@ -1,12 +1,22 @@
-import { useState, useRef, useMemo } from 'react';
+import { useState, useRef, useMemo, useContext } from 'react';
 import Nav from "../components/Nav";
+import { GlobalContext } from '../contexts/GlobalContext';
 const symbols = `!@#$%^&*()-_=+[]{}|;:'\\",.<>?/"~`;
 
 function AddTask() {
+    const { addTask } = useContext(GlobalContext);
+
     // Input form
     const [title, setTitle] = useState("");
     const descriptionRef = useRef(null);
     const statusRef = useRef(null);
+
+    // alert 
+    const [alert, setAlert] = useState({
+        show: false,
+        type: "",
+        message: ""
+    });
 
     // check title input
     const titleValidation = useMemo(() => {
@@ -24,24 +34,50 @@ function AddTask() {
     }, [title]);
 
     // Form submit
-    const handleFormSubmit = (e) => {
+    const handleFormSubmit = async (e) => {
         e.preventDefault()
-        if (titleValidation.isValid) {
-            console.log(`
-                    Nome: ${title},
-                    Description: ${descriptionRef.current.value},
-                    Status: ${statusRef.current.value}
-                `);
-        } else {
-            console.log("Form non valido");
 
-        }
-    }
+        if (titleValidation.isValid) {
+            const newTask = {
+                title: title,
+                description: descriptionRef.current.value,
+                status: statusRef.current.value
+            }
+
+            try {
+                await addTask(newTask);
+                // reset form only after await addTask response
+                setTitle("");
+                descriptionRef.current.value = "";
+                statusRef.current.value = "";
+                // success alert
+                setAlert({
+                    show: true,
+                    type: "success",
+                    message: "Task aggiunta con successo"
+                })
+                setTimeout(() => setAlert({ show: false }), 3000);
+            } catch (error) {
+                // error alert
+                setAlert({
+                    show: true,
+                    type: "error",
+                    message: "Errore nell'aggiunta della task"
+                })
+                setTimeout(() => setAlert({ show: false }), 3000);
+            };
+        };
+    };
 
     return (
         <>
             <Nav />
             <h1>AddTask Page</h1>
+
+            {/* Custom alert */}
+            {alert.show && (
+                <div className={`custom-alert ${alert.type}`}>{alert.message}</div>
+            )}
 
             {/* Form section */}
             <form onSubmit={handleFormSubmit}>
@@ -79,7 +115,7 @@ function AddTask() {
                         <option value="Done">Done</option>
                     </select>
                 </div>
-                <button type='submit'>Invia</button>
+                <button type='submit' disabled={!titleValidation.isValid}>Aggiungi Task</button>
             </form>
         </>
     )
