@@ -1,8 +1,9 @@
-import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { GlobalProvider } from './contexts/GlobalContext';
 import TaskList from './pages/TaskList';
 import AddTasks from './pages/AddTasks';
-import { GlobalProvider } from './contexts/GlobalContext';
+import TaskDetail from './pages/TaskDetail';
+import './App.css';
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
           <Routes>
             <Route path="/" element={<TaskList />}></Route>
             <Route path="/AddTask" element={<AddTasks />}></Route>
+            <Route path="/Task/:id" element={<TaskDetail />}></Route>
           </Routes>
         </BrowserRouter>
       </GlobalProvider>
