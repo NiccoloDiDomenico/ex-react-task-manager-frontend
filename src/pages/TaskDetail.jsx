@@ -3,12 +3,14 @@ import { useParams, useNavigate } from "react-router-dom";
 import { GlobalContext } from "../contexts/GlobalContext";
 import Nav from "../components/Nav";
 import "../css/TaskDetail.css"
+import Modal from "../components/Modal";
 
 function TaskDetails() {
     const { id } = useParams();
     const navigate = useNavigate();
     const { tasks, removeTask } = useContext(GlobalContext);
     const [alert, setAlert] = useState({ show: false, type: "", message: "" });
+    const [showModal, setShowModal] = useState(false);
 
     // Find the respective task
     const task = tasks.find((t) => t.id === parseInt(id));
@@ -21,9 +23,8 @@ function TaskDetails() {
                 type: "success",
                 message: "Task eliminata con successo"
             });
-            setTimeout(() => {
-                navigate('/');
-            }, 2000);
+
+            navigate('/');
         } catch (error) {
             setAlert({
                 show: true,
@@ -53,11 +54,19 @@ function TaskDetails() {
                             </span>
                         </div>
                         <button
-                            onClick={handleRemoveTask}
+                            onClick={() => setShowModal(true)}
                             className="delete-btn"
                         >
                             Elimina Task
                         </button>
+                        <Modal
+                            title={"Conferma eliminazione"}
+                            content={"Sei sicuro di voler eliminare questa task?"}
+                            show={showModal}
+                            onClose={() => setShowModal(false)}
+                            onConfirm={handleRemoveTask}
+                            confirmText="Elimina"
+                        />
                     </div>
                 </div >
             ) : (
