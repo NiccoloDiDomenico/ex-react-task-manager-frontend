@@ -2,22 +2,28 @@ import { useContext, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { GlobalContext } from "../contexts/GlobalContext";
 import Nav from "../components/Nav";
-import "../css/TaskDetail.css"
 import Modal from "../components/Modal";
+import EditTaskModal from "../components/EditTaskModal";
+import "../css/TaskDetail.css"
 
 function TaskDetails() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { tasks, removeTask } = useContext(GlobalContext);
+
+    // Context
+    const { tasks, removeTask, updateTask } = useContext(GlobalContext);
+
+    // States
     const [alert, setAlert] = useState({ show: false, type: "", message: "" });
-    const [showModal, setShowModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showUpdateModal, setShowUpdateModal] = useState(false);
 
     // Find the respective task
     const task = tasks.find((t) => t.id === parseInt(id));
 
     const handleRemoveTask = async () => {
         try {
-            await removeTask(task.id);
+            await removeTask(task);
             setAlert({
                 show: true,
                 type: "success",
@@ -31,7 +37,27 @@ function TaskDetails() {
                 type: "error",
                 message: error.message
             });
-            setTimeout(() => setAlert({ show: false }), 2000)
+            setTimeout(() => setAlert({ show: false }), 3000)
+        }
+    }
+
+    const handleUpdateTask = async (updatedTask) => {
+        try {
+            await updateTask(updatedTask);
+            setShowUpdateModal(false);
+            setAlert({
+                show: true,
+                type: "success",
+                message: "Task aggiornata con successo"
+            });
+            setTimeout(() => setAlert({ show: false }), 3000)
+        } catch (error) {
+            setAlert({
+                show: true,
+                type: "error",
+                message: error.message
+            });
+            setTimeout(() => setAlert({ show: false }), 3000)
         }
     }
 
@@ -53,20 +79,36 @@ function TaskDetails() {
                                 Created: {new Date(task.createdAt).toLocaleDateString()}
                             </span>
                         </div>
-                        <button
-                            onClick={() => setShowModal(true)}
-                            className="delete-btn"
-                        >
-                            Elimina Task
-                        </button>
-                        <Modal
-                            title={"Conferma eliminazione"}
-                            content={"Sei sicuro di voler eliminare questa task?"}
-                            show={showModal}
-                            onClose={() => setShowModal(false)}
-                            onConfirm={handleRemoveTask}
-                            confirmText="Elimina"
-                        />
+                        <div className="btn-group">
+                            {/* Delete button */}
+                            <button
+                                onClick={() => setShowDeleteModal(true)}
+                                className="delete-btn"
+                            >
+                                Elimina Task
+                            </button>
+                            <Modal
+                                title={"Conferma eliminazione"}
+                                content={"Sei sicuro di voler eliminare questa task?"}
+                                show={showDeleteModal}
+                                onClose={() => setShowDeleteModal(false)}
+                                onConfirm={handleRemoveTask}
+                                confirmText="Elimina"
+                            />
+                            {/* Update button */}
+                            <button
+                                onClick={() => setShowUpdateModal(true)}
+                                className="update-btn"
+                            >
+                                Modifica Task
+                            </button>
+                            <EditTaskModal
+                                task={task}
+                                show={showUpdateModal}
+                                onClose={() => setShowUpdateModal(false)}
+                                onSave={handleUpdateTask}
+                            />
+                        </div>
                     </div>
                 </div >
             ) : (

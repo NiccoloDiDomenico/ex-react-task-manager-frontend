@@ -32,15 +32,15 @@ function useTasks() {
         }
     }
 
-    const removeTask = async (taskToRemoveId) => {
+    const removeTask = async (taskToRemove) => {
         try {
-            const res = await fetch(`${apiUrl}/tasks/${taskToRemoveId}`, {
+            const res = await fetch(`${apiUrl}/tasks/${taskToRemove.id}`, {
                 method: 'DELETE'
             });
             const data = await res.json();
 
             if (data.success) {
-                setTasks(tasks.filter((t) => t.id !== taskToRemoveId));
+                setTasks(tasks.filter((t) => t.id !== taskToRemove.id));
             } else {
                 throw new Error(data.message);
             }
@@ -49,8 +49,25 @@ function useTasks() {
         }
     }
 
-    const updateTask = () => {
-        // codice da eseguire
+    const updateTask = async (taskToUpdate) => {
+        try {
+            const res = await fetch(`${apiUrl}/tasks/${taskToUpdate.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(taskToUpdate)
+            });
+            const data = await res.json();
+
+            if (data.success) {
+                setTasks(tasks.map((t) => t.id === taskToUpdate.id ? data.task : t))
+            } else {
+                throw new Error(data.message);
+            }
+        } catch (error) {
+            throw error;
+        }
     }
 
     return { tasks, addTask, removeTask, updateTask }
