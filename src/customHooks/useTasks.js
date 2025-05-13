@@ -20,7 +20,6 @@ function useTasks() {
                 },
                 body: JSON.stringify(taskToAdd)
             });
-
             const data = await res.json();
 
             if (data.success) {
@@ -33,8 +32,21 @@ function useTasks() {
         }
     }
 
-    const removeTask = () => {
-        // codice da eseguire
+    const removeTask = async (taskToRemoveId) => {
+        try {
+            const res = await fetch(`${apiUrl}/tasks/${taskToRemoveId}`, {
+                method: 'DELETE'
+            });
+            const data = await res.json();
+
+            if (data.success) {
+                setTasks(tasks.filter((t) => t.id !== taskToRemoveId));
+            } else {
+                throw new Error(data.message);
+            }
+        } catch (error) {
+            throw error;
+        }
     }
 
     const updateTask = () => {

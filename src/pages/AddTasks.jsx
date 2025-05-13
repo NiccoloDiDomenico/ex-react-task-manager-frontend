@@ -73,10 +73,8 @@ function AddTask() {
     return (
         <>
             <Nav />
-            {alert.show && (
-                <div className={`custom-alert ${alert.type}`}>{alert.message}</div>
-            )}
 
+            {/* Form */}
             <div className="form-container">
                 <h1>Add New Task</h1>
                 <form onSubmit={handleFormSubmit}>
@@ -118,6 +116,11 @@ function AddTask() {
                     </button>
                 </form>
             </div>
+
+            {/* Alert */}
+            {alert.show && (
+                <div className={`custom-alert ${alert.type}`}>{alert.message}</div>
+            )}
         </>
     );
 }

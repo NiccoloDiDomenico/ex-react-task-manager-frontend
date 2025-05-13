@@ -1,15 +1,38 @@
-import { useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useContext, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { GlobalContext } from "../contexts/GlobalContext";
 import Nav from "../components/Nav";
 import "../css/TaskDetail.css"
 
 function TaskDetails() {
     const { id } = useParams();
-    const { tasks } = useContext(GlobalContext);
+    const navigate = useNavigate();
+    const { tasks, removeTask } = useContext(GlobalContext);
+    const [alert, setAlert] = useState({ show: false, type: "", message: "" });
 
     // Find the respective task
     const task = tasks.find((t) => t.id === parseInt(id));
+
+    const handleRemoveTask = async () => {
+        try {
+            await removeTask(task.id);
+            setAlert({
+                show: true,
+                type: "success",
+                message: "Task eliminata con successo"
+            });
+            setTimeout(() => {
+                navigate('/');
+            }, 2000);
+        } catch (error) {
+            setAlert({
+                show: true,
+                type: "error",
+                message: error.message
+            });
+            setTimeout(() => setAlert({ show: false }), 2000)
+        }
+    }
 
     return (
         <>
@@ -30,7 +53,7 @@ function TaskDetails() {
                             </span>
                         </div>
                         <button
-                            onClick={() => console.log("Elimino task:", id)}
+                            onClick={handleRemoveTask}
                             className="delete-btn"
                         >
                             Elimina Task
@@ -38,9 +61,23 @@ function TaskDetails() {
                     </div>
                 </div >
             ) : (
-                <h2>Task non trovata</h2>
-            )
-            }
+                <div className="not-found-container">
+                    <h2>Task non trovata</h2>
+                    <p>La task che stai cercando non esiste.</p>
+                    <button
+                        className="back-btn"
+                        onClick={() => navigate('/')}
+                    >
+                        Torna alla lista
+                    </button>
+                </div>
+            )}
+            {/* Alert */}
+            {alert.show && (
+                <div className={`custom-alert ${alert.type}`}>
+                    {alert.message}
+                </div>
+            )}
         </>
     )
 }
