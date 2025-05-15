@@ -12,6 +12,7 @@
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    table-layout: fixed;
 }
 
 /* Table headers */
@@ -24,6 +25,27 @@
     padding: 1rem;
     text-align: left;
     font-weight: 600;
+}
+
+.tasks-table th.sortable {
+    position: relative;
+    white-space: nowrap;
+}
+
+/* Set specific widths for columns */
+.tasks-table th:nth-child(1) {
+    width: 50%;
+    /* Title column */
+}
+
+.tasks-table th:nth-child(2) {
+    width: 25%;
+    /* Status column */
+}
+
+.tasks-table th:nth-child(3) {
+    width: 25%;
+    /* Created At column */
 }
 
 /* Table body */
@@ -49,4 +71,12 @@
 .tasks-table tbody tr:hover {
     background-color: #f1f4f8;
     transition: background-color 0.2s ease;
+}
+
+/* Sort indicator positioning */
+.sortable span {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
 }
