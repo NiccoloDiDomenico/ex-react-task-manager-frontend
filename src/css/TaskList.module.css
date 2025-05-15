@@ -1,11 +1,11 @@
 /* Table */
-.table-container {
+.tableContainer {
     max-width: 1200px;
     margin: 2rem auto;
     padding: 0 1rem;
 }
 
-.tasks-table {
+.tasksTable {
     width: 100%;
     border-collapse: collapse;
     background: white;
@@ -16,46 +16,52 @@
 }
 
 /* Table headers */
-.tasks-table thead {
+.tasksTable thead {
     background-color: #4a90e2;
     color: white;
 }
 
-.tasks-table th {
+.tasksTable th {
     padding: 1rem;
     text-align: left;
     font-weight: 600;
 }
 
-.tasks-table th.sortable {
+/* Sort arrow symbol */
+.sortable {
     position: relative;
     white-space: nowrap;
+    cursor: pointer;
+}
+
+.sortable:hover {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Set specific widths for columns */
-.tasks-table th:nth-child(1) {
+.tasksTable th:nth-child(1) {
     width: 50%;
     /* Title column */
 }
 
-.tasks-table th:nth-child(2) {
+.tasksTable th:nth-child(2) {
     width: 25%;
     /* Status column */
 }
 
-.tasks-table th:nth-child(3) {
+.tasksTable th:nth-child(3) {
     width: 25%;
     /* Created At column */
 }
 
 /* Table body */
-.tasks-table td {
+.tasksTable td {
     padding: 1rem;
     border-bottom: 1px solid #eee;
 }
 
 /* Status colors maintained from your existing implementation */
-.status-cell {
+.statusCell {
     text-align: center;
     font-weight: 500;
     border-radius: 4px;
@@ -63,12 +69,12 @@
 }
 
 /* Zebra striping */
-.tasks-table tbody tr:nth-child(even) {
+.tasksTable tbody tr:nth-child(even) {
     background-color: #f8f9fa;
 }
 
 /* Hover effect */
-.tasks-table tbody tr:hover {
+.tasksTable tbody tr:hover {
     background-color: #f1f4f8;
     transition: background-color 0.2s ease;
 }
@@ -79,4 +85,17 @@
     right: 8px;
     top: 50%;
     transform: translateY(-50%);
+}
+
+/* Search bar */
+.searchContainer {
+    margin: 1rem 0;
+}
+
+.searchInput {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 300px;
 }

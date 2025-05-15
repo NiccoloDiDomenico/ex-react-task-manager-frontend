@@ -1,35 +1,35 @@
 import { createPortal } from "react-dom";
-import '../css/Modal.css'
+import styles from '../css/Modal.module.css';
 
 function Modal({ title, content, show, onClose, onConfirm, confirmText = "Conferma" }) {
+    if (!show) return null;
 
-    return show && createPortal(
-        <div className="modal-overlay">
-            <div className="modal-content">
-                {/* Header */}
-                <div className="modal-header">
+    return createPortal(
+        <div className={styles.modalOverlay} onClick={onClose}>
+            <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
+                <div className={styles.modalHeader}>
                     <h2>{title}</h2>
                     <button
-                        className="close-button"
+                        className={styles.closeButton}
                         onClick={onClose}
                     >
-                        x
+                        ×
                     </button>
                 </div>
-                {/* Body */}
-                <div className="modal-body">
+
+                <div className={styles.modalBody}>
                     {content}
                 </div>
-                {/* Footer */}
-                <div className="modal-footer">
+
+                <div className={styles.modalFooter}>
                     <button
-                        className="cancel-button"
+                        className={styles.cancelButton}
                         onClick={onClose}
                     >
                         Annulla
                     </button>
                     <button
-                        className="confirm-button"
+                        className={styles.confirmButton}
                         onClick={onConfirm}
                     >
                         {confirmText}
@@ -38,7 +38,7 @@ function Modal({ title, content, show, onClose, onConfirm, confirmText = "Confer
             </div>
         </div>,
         document.body
-    )
+    );
 }
 
 export default Modal;

@@ -1,11 +1,14 @@
 /* Nav */
-nav {
+.navbar {
     background-color: #4a90e2;
     padding: 1rem 2rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    gap: 1rem;
+    align-items: center;
 }
 
-nav a {
+.navLink {
     color: white;
     text-decoration: none;
     padding: 0.5rem 1rem;
@@ -14,7 +17,7 @@ nav a {
     font-weight: 500;
 }
 
-nav a:hover {
+.navLink:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
@@ -26,11 +29,4 @@ nav a:hover {
 
 .active:hover {
     background-color: #f8f9fa;
-}
-
-/* Maintain the gap between links */
-nav {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
 }

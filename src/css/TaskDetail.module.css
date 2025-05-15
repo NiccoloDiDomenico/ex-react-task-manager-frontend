@@ -1,4 +1,5 @@
-.task-detail-container {
+/* Task Detail */
+.taskDetailContainer {
     max-width: 800px;
     margin: 2rem auto;
     padding: 2rem;
@@ -7,7 +8,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.task-info {
+.taskInfo {
     margin-top: 2rem;
 }
 
@@ -17,46 +18,49 @@
     color: #666;
 }
 
-.meta-info {
+.metaInfo {
     display: flex;
     gap: 1rem;
     align-items: center;
     margin-bottom: 2rem;
 }
 
+/* Status */
 .status {
     padding: 0.5rem 1rem;
     border-radius: 4px;
     font-weight: 500;
 }
 
-.status.to.do {
+.todo {
     background-color: red;
     color: white;
 }
 
-.status.doing {
+.doing {
     background-color: yellow;
     color: black;
 }
 
-.status.done {
+.done {
     background-color: green;
     color: white;
 }
 
+/* Date */
 .date {
     color: #666;
     font-size: 1rem;
 }
 
-.btn-group {
+/* Buttons */
+.btnGroup {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     gap: 1rem;
 }
 
-.delete-btn {
+.deleteBtn {
     padding: 0.75rem 1.5rem;
     background-color: #dc3545;
     color: white;
@@ -64,14 +68,13 @@
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-
 }
 
-.delete-btn:hover {
+.deleteBtn:hover {
     background-color: #c82333;
 }
 
-.update-btn {
+.updateBtn {
     padding: 0.75rem 1.5rem;
     background-color: #357abd;
     color: white;
@@ -79,15 +82,14 @@
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-
 }
 
-.update-btn:hover {
+.updateBtn:hover {
     background-color: #456183;
 }
 
 /* Not found task */
-.not-found-container {
+.notFoundContainer {
     max-width: 600px;
     margin: 4rem auto;
     text-align: center;
@@ -97,17 +99,17 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.not-found-container h2 {
+.notFoundContainer h2 {
     color: #dc3545;
     margin-bottom: 1rem;
 }
 
-.not-found-container p {
+.notFoundContainer p {
     color: #666;
     margin-bottom: 2rem;
 }
 
-.back-btn {
+.backBtn {
     padding: 0.75rem 1.5rem;
     background-color: #4a90e2;
     color: white;
@@ -117,6 +119,6 @@
     transition: background-color 0.3s ease;
 }
 
-.back-btn:hover {
+.backBtn:hover {
     background-color: #357abd;
 }

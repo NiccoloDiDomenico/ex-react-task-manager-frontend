@@ -1,7 +1,7 @@
 import { useState, useRef, useMemo, useContext } from 'react';
 import Nav from "../components/Nav";
 import { GlobalContext } from '../contexts/GlobalContext';
-import '../css/AddTasks.css'
+import styles from '../css/AddTasks.module.css';
 const symbols = `!@#$%^&*()-_=+[]{}|;:'\\",.<>?/"~`;
 
 function AddTask() {
@@ -73,28 +73,26 @@ function AddTask() {
     return (
         <>
             <Nav />
-
-            {/* Form */}
-            <div className="form-container">
+            <div className={styles.formContainer}>
                 <h1>Add New Task</h1>
                 <form onSubmit={handleFormSubmit}>
-                    <div className="form-group">
+                    <div className={styles.formGroup}>
                         <label htmlFor="title">Nome</label>
                         <input
                             id="title"
                             type="text"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
-                            className={titleValidation.isValid ? "valid" : "error"}
+                            className={titleValidation.isValid ? styles.validInput : styles.invalidInput}
                         />
                         {titleValidation.errors.isEmpty && (
-                            <span className='error-message'>{titleValidation.messages.isEmpty}</span>
+                            <span className={styles.errorMessage}>{titleValidation.messages.isEmpty}</span>
                         )}
                         {titleValidation.errors.hasSymbols && (
-                            <span className='error-message'>{titleValidation.messages.hasSymbols}</span>
+                            <span className={styles.errorMessage}>{titleValidation.messages.hasSymbols}</span>
                         )}
                     </div>
-                    <div className="form-group">
+                    <div className={styles.formGroup}>
                         <label htmlFor="description">Descrizione</label>
                         <textarea
                             id="description"
@@ -102,7 +100,7 @@ function AddTask() {
                         ></textarea>
                     </div>
 
-                    <div className="form-group">
+                    <div className={styles.formGroup}>
                         <label htmlFor="status">Stato</label>
                         <select id="status" ref={statusRef} defaultValue="To do">
                             <option value="To do">To do</option>
@@ -111,15 +109,20 @@ function AddTask() {
                         </select>
                     </div>
 
-                    <button type="submit" disabled={!titleValidation.isValid}>
+                    <button
+                        type="submit"
+                        disabled={!titleValidation.isValid}
+                        className={styles.submitButton}
+                    >
                         Aggiungi Task
                     </button>
                 </form>
             </div>
 
-            {/* Alert */}
             {alert.show && (
-                <div className={`custom-alert ${alert.type}`}>{alert.message}</div>
+                <div className={`${styles.customAlert} ${styles[alert.type]}`}>
+                    {alert.message}
+                </div>
             )}
         </>
     );

@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import Modal from "./Modal";
-
+import styles from '../css/Modal.module.css';  // Using the same Modal styles
 
 function EditTaskModal({ task, show, onClose, onSave }) {
     const formRef = useRef();
@@ -22,7 +22,7 @@ function EditTaskModal({ task, show, onClose, onSave }) {
 
     const formContent = (
         <form ref={formRef} onSubmit={handleSubmit}>
-            <div className="form-group">
+            <div className={styles.formGroup}>
                 <label htmlFor="title">Title</label>
                 <input
                     type="text"
@@ -33,7 +33,7 @@ function EditTaskModal({ task, show, onClose, onSave }) {
                 />
             </div>
 
-            <div className="form-group">
+            <div className={styles.formGroup}>
                 <label htmlFor="description">Description</label>
                 <textarea
                     id="description"
@@ -43,7 +43,7 @@ function EditTaskModal({ task, show, onClose, onSave }) {
                 />
             </div>
 
-            <div className="form-group">
+            <div className={styles.formGroup}>
                 <label htmlFor="status">Status</label>
                 <select
                     id="status"

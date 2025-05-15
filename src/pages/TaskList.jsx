@@ -2,7 +2,7 @@ import Nav from "../components/Nav";
 import { useContext, useMemo, useState } from "react";
 import { GlobalContext } from "../contexts/GlobalContext";
 import TaskRow from "../components/TaskRow";
-import '../css/TaskList.css';
+import styles from '../css/TaskList.module.css';
 
 function TaskList() {
     const { tasks } = useContext(GlobalContext);
@@ -10,6 +10,7 @@ function TaskList() {
     // States
     const [sortBy, setSortBy] = useState('createdAt');
     const [sortOrder, setSortOrder] = useState(1);
+    const [searchQuery, setSearchQuery] = useState("");
 
     // Handle Table Sort
     const handleTableSort = (columnToSort) => {
@@ -45,19 +46,29 @@ function TaskList() {
     return (
         <>
             <Nav />
-            <div className="table-container">
+            <div className={styles.tableContainer}>
                 <h1>Task Manager</h1>
+                {/* Search Bar */}
+                <div className={styles.searchContainer}>
+                    <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className={styles.searchInput}
+                        placeholder="Cerca tasks..."
+                    />
+                </div>
                 {/* Table */}
-                <table className="tasks-table">
+                <table className={styles.tasksTable}>
                     <thead>
                         <tr>
-                            <th onClick={() => handleTableSort('title')} className="sortable">
+                            <th onClick={() => handleTableSort('title')} className={styles.sortable}>
                                 Title <span>{sortBy === 'title' && (sortOrder === 1 ? '↑' : '↓')}</span>
                             </th>
-                            <th onClick={() => handleTableSort('status')} className="sortable">
+                            <th onClick={() => handleTableSort('status')} className={styles.sortable}>
                                 Status <span>{sortBy === 'status' && (sortOrder === 1 ? '↑' : '↓')}</span>
                             </th>
-                            <th onClick={() => handleTableSort('createdAt')} className="sortable">
+                            <th onClick={() => handleTableSort('createdAt')} className={styles.sortable}>
                                 Created At <span>{sortBy === 'createdAt' && (sortOrder === 1 ? '↑' : '↓')}</span>
                             </th>
                         </tr>

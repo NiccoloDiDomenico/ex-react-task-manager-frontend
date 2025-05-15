@@ -4,9 +4,9 @@ import { GlobalContext } from "../contexts/GlobalContext";
 import Nav from "../components/Nav";
 import Modal from "../components/Modal";
 import EditTaskModal from "../components/EditTaskModal";
-import "../css/TaskDetail.css"
+import styles from '../css/TaskDetail.module.css';
 
-function TaskDetails() {
+function TaskDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -66,71 +66,65 @@ function TaskDetails() {
             <Nav />
             {/* Task Detail */}
             {task ? (
-                <div className="task-detail-container">
+                <div className={styles.taskDetailContainer}>
                     <h1>Task Details</h1>
-                    <div className="task-info">
+                    <div className={styles.taskInfo}>
                         <h2>{task.title}</h2>
-                        <p className="description">{task.description}</p>
-                        <div className="meta-info">
-                            <span className={`status ${task.status.toLowerCase()}`}>
+                        <p className={styles.description}>{task.description}</p>
+                        <div className={styles.metaInfo}>
+                            <span className={`${styles.status} ${styles[task.status.toLowerCase().replace(/\s/g, '')]}`}>
                                 {task.status}
                             </span>
-                            <span className="date">
+                            <span className={styles.date}>
                                 Created: {new Date(task.createdAt).toLocaleDateString()}
                             </span>
                         </div>
-                        <div className="btn-group">
-                            {/* Delete button */}
+                        <div className={styles.btnGroup}>
                             <button
                                 onClick={() => setShowDeleteModal(true)}
-                                className="delete-btn"
+                                className={styles.deleteBtn}
                             >
                                 Elimina Task
                             </button>
-                            <Modal
-                                title={"Conferma eliminazione"}
-                                content={"Sei sicuro di voler eliminare questa task?"}
-                                show={showDeleteModal}
-                                onClose={() => setShowDeleteModal(false)}
-                                onConfirm={handleRemoveTask}
-                                confirmText="Elimina"
-                            />
-                            {/* Update button */}
                             <button
                                 onClick={() => setShowUpdateModal(true)}
-                                className="update-btn"
+                                className={styles.updateBtn}
                             >
                                 Modifica Task
                             </button>
-                            <EditTaskModal
-                                task={task}
-                                show={showUpdateModal}
-                                onClose={() => setShowUpdateModal(false)}
-                                onSave={handleUpdateTask}
-                            />
                         </div>
                     </div>
-                </div >
+                </div>
             ) : (
-                <div className="not-found-container">
+                <div className={styles.notFoundContainer}>
                     <h2>Task non trovata</h2>
                     <p>La task che stai cercando non esiste.</p>
                     <button
-                        className="back-btn"
+                        className={styles.backBtn}
                         onClick={() => navigate('/')}
                     >
                         Torna alla lista
                     </button>
                 </div>
             )}
+            {/* Modals */}
+            <Modal
+                title="Conferma eliminazione"
+                content="Sei sicuro di voler eliminare questa task?"
+                show={showDeleteModal}
+                onClose={() => setShowDeleteModal(false)}
+                onConfirm={handleRemoveTask}
+                confirmText="Elimina"
+            />
+            <EditTaskModal
+                task={task}
+                show={showUpdateModal}
+                onClose={() => setShowUpdateModal(false)}
+                onSave={handleUpdateTask}
+            />
             {/* Alert */}
             {alert.show && (
                 <div className={`custom-alert ${alert.type}`}>
                     {alert.message}
-                </div>
-            )}
-        </>
-    )
-}
-
-export default TaskDetails;
+                </div>)}        </>);
+} export default TaskDetail;
