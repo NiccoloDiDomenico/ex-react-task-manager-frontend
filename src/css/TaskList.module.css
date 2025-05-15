@@ -60,6 +60,11 @@
     border-bottom: 1px solid #eee;
 }
 
+.tasksTable td a {
+    text-decoration: none;
+    color: black;
+}
+
 /* Status colors maintained from your existing implementation */
 .statusCell {
     text-align: center;

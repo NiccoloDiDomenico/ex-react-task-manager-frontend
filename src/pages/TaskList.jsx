@@ -1,10 +1,12 @@
 import Nav from "../components/Nav";
-import { useContext, useMemo, useState } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
 import { GlobalContext } from "../contexts/GlobalContext";
 import TaskRow from "../components/TaskRow";
+import { debounce } from '../utility/debaunce';
 import styles from '../css/TaskList.module.css';
 
 function TaskList() {
+    // Context
     const { tasks } = useContext(GlobalContext);
 
     // States
@@ -23,8 +25,20 @@ function TaskList() {
     }
 
     // Sorted Task Array
-    const sortedTasks = useMemo(() => {
-        return [...tasks].sort((a, b) => {
+    const filteredAndSortedTasks = useMemo(() => {
+
+        // Filtered the initial tasks 
+        const filteredTasks = tasks.filter((task) => {
+            if (!searchQuery) return true
+
+            const searchLower = searchQuery.toLowerCase()
+            const titleMatch = task.title.toLowerCase().includes(searchLower)
+
+            return titleMatch
+        })
+
+        // Sort the filtered task
+        return [...filteredTasks].sort((a, b) => {
             switch (sortBy) {
                 case 'title':
                     return a.title.localeCompare(b.title) * sortOrder;
@@ -41,7 +55,22 @@ function TaskList() {
                     break;
             }
         })
-    }, [tasks, sortBy, sortOrder])
+    }, [tasks, sortBy, sortOrder, searchQuery])
+
+    const handleSearchQuery = useCallback(
+        debounce((value) => {       // value comes from e.target.value
+            setSearchQuery(value);
+        }, 500), []);
+
+    // EX: user write 'hello'
+    //         Time    | User Action    | What Happens
+    // --------|---------------|-------------
+    // 0ms     | Types 'h'     | onChange triggers → handleSearchQuery('h')
+    // 100ms   | Types 'e'     | onChange triggers → clearTimeout(previous), handleSearchQuery('he')
+    // 150ms   | Types 'l'     | onChange triggers → clearTimeout(previous), handleSearchQuery('hel')
+    // 200ms   | Types 'l'     | onChange triggers → clearTimeout(previous), handleSearchQuery('hell')
+    // 250ms   | Types 'o'     | onChange triggers → clearTimeout(previous), handleSearchQuery('hello')
+    // 750ms   | (waiting)     | Finally setSearchQuery('hello') executes
 
     return (
         <>
@@ -52,8 +81,8 @@ function TaskList() {
                 <div className={styles.searchContainer}>
                     <input
                         type="text"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                        // value={searchQuery}
+                        onChange={(e) => handleSearchQuery(e.target.value)}
                         className={styles.searchInput}
                         placeholder="Cerca tasks..."
                     />
@@ -74,7 +103,7 @@ function TaskList() {
                         </tr>
                     </thead>
                     <tbody>
-                        {sortedTasks.map((task) => (
+                        {filteredAndSortedTasks.map((task) => (
                             <TaskRow key={task.id} task={task} />
                         ))}
                     </tbody>
