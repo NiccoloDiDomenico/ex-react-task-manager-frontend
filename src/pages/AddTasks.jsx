@@ -7,17 +7,11 @@ const symbols = `!@#$%^&*()-_=+[]{}|;:'\\",.<>?/"~`;
 function AddTask() {
     const { addTask } = useContext(GlobalContext);
 
-    // Input form
+    // States and Ref
     const [title, setTitle] = useState("");
     const descriptionRef = useRef(null);
     const statusRef = useRef(null);
-
-    // alert 
-    const [alert, setAlert] = useState({
-        show: false,
-        type: "",
-        message: ""
-    });
+    const [alert, setAlert] = useState({ show: false, type: "", message: "" });
 
     // check title input
     const titleValidation = useMemo(() => {
@@ -73,8 +67,11 @@ function AddTask() {
     return (
         <>
             <Nav />
+
             <div className={styles.formContainer}>
                 <h1>Add New Task</h1>
+
+                {/* Form  */}
                 <form onSubmit={handleFormSubmit}>
                     <div className={styles.formGroup}>
                         <label htmlFor="title">Nome</label>

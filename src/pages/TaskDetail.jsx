@@ -24,12 +24,6 @@ function TaskDetail() {
     const handleRemoveTask = async () => {
         try {
             await removeTask(task);
-            setAlert({
-                show: true,
-                type: "success",
-                message: "Task eliminata con successo"
-            });
-
             navigate('/');
         } catch (error) {
             setAlert({
@@ -64,6 +58,7 @@ function TaskDetail() {
     return (
         <>
             <Nav />
+
             {/* Task Detail */}
             {task ? (
                 <div className={styles.taskDetailContainer}>
@@ -107,6 +102,7 @@ function TaskDetail() {
                     </button>
                 </div>
             )}
+
             {/* Modals */}
             <Modal
                 title="Conferma eliminazione"
@@ -122,9 +118,13 @@ function TaskDetail() {
                 onClose={() => setShowUpdateModal(false)}
                 onSave={handleUpdateTask}
             />
+
             {/* Alert */}
             {alert.show && (
                 <div className={`custom-alert ${alert.type}`}>
                     {alert.message}
-                </div>)}        </>);
+                </div>
+            )}
+        </>
+    );
 } export default TaskDetail;
