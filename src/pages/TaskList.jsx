@@ -7,12 +7,14 @@ import styles from '../css/TaskList.module.css';
 
 function TaskList() {
     // Context
-    const { tasks } = useContext(GlobalContext);
+    const { tasks, removeMultipleTasks } = useContext(GlobalContext);
 
     // States
     const [sortBy, setSortBy] = useState('createdAt');
     const [sortOrder, setSortOrder] = useState(1);
     const [searchQuery, setSearchQuery] = useState("");
+    const [selectedTaskIds, setSelectedTaskIds] = useState([]);
+    const [alert, setAlert] = useState({ show: false, type: "", message: "" });
 
     // Handle Table Sort
     const handleTableSort = (columnToSort) => {
@@ -72,6 +74,41 @@ function TaskList() {
     // 250ms   | Types 'o'     | onChange triggers → clearTimeout(previous), handleSearchQuery('hello')
     // 750ms   | (waiting)     | Finally setSearchQuery('hello') executes
 
+    // Handle multiple delete
+    const toggleSelection = (taskId) => {
+        setSelectedTaskIds((prev) => {
+            const isSelected = prev.includes(taskId);
+
+            if (isSelected) {
+                // remove taskId if already selected
+                return prev.filter((id) => id !== taskId);
+            } else {
+                // add taskId if not selected
+                return [...prev, taskId];
+            }
+        })
+    }
+
+    const handleSelectedTasks = async () => {
+        try {
+            await removeMultipleTasks(selectedTaskIds);
+            setAlert({
+                show: true,
+                type: "success",
+                message: "Tasks eliminate con successo"
+            });
+            setTimeout(() => setAlert({ show: false }), 3000)
+            setSelectedTaskIds([]);
+        } catch (error) {
+            setAlert({
+                show: true,
+                type: "error",
+                message: error.message
+            });
+            setTimeout(() => setAlert({ show: false }), 3000)
+        }
+    }
+
     return (
         <>
             <Nav />
@@ -100,15 +137,35 @@ function TaskList() {
                             <th onClick={() => handleTableSort('createdAt')} className={styles.sortable}>
                                 Created At <span>{sortBy === 'createdAt' && (sortOrder === 1 ? '↑' : '↓')}</span>
                             </th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         {filteredAndSortedTasks.map((task) => (
-                            <TaskRow key={task.id} task={task} />
+                            <TaskRow
+                                key={task.id}
+                                task={task}
+                                checked={selectedTaskIds.includes(task.id)}
+                                handleSelectedChange={() => toggleSelection(task.id)}
+                            />
                         ))}
                     </tbody>
                 </table>
-            </div>
+
+                {/* Button Delete Selected Tasks */}
+                {selectedTaskIds.length > 0 && (
+                    <button className={styles.deleteBtn} onClick={handleSelectedTasks}>
+                        Elimina tasks selezionate
+                    </button>
+                )}
+
+                {/* Alert */}
+                {alert.show && (
+                    <div className={`custom-alert ${alert.type}`}>
+                        {alert.message}
+                    </div>
+                )}
+            </div >
         </>
     );
 }

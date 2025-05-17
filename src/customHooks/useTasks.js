@@ -70,7 +70,38 @@ function useTasks() {
         }
     }
 
-    return { tasks, addTask, removeTask, updateTask }
+    const removeMultipleTasks = async (tasksToRemove) => {
+        // Create an array of delete promises
+        const deletePromises = tasksToRemove.map((id) => {
+            return fetch(`${apiUrl}/tasks/${id}`, {
+                method: 'DELETE'
+            }).then((res) => res.json());
+        });
+
+        // Run all promises in parallel
+        const results = await Promise.allSettled(deletePromises);
+
+        // Track failed deletions
+        const rejectedPromises = results.reduce((acc, result, index) => {
+            if (result.status === 'rejected' || !result.value.success) {
+                acc.push(tasksToRemove[index]);
+            }
+            return acc;
+        }, []);
+
+        // Update state for successful deletions
+        const fullfilledPromises = tasksToRemove.filter(id => !rejectedPromises.includes(id));
+
+        // Update tasks state
+        setTasks(prev => prev.filter(task => !fullfilledPromises.includes(task.id)));
+
+        // If any deletions failed, throw error
+        if (rejectedPromises.length > 0) {
+            throw new Error(`Failed to delete tasks with IDs: ${rejectedPromises.join(', ')}`);
+        }
+    }
+
+    return { tasks, addTask, removeTask, updateTask, removeMultipleTasks }
 }
 
 export default useTasks;
