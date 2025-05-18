@@ -24,8 +24,16 @@ function TaskDetail() {
     const handleRemoveTask = async () => {
         try {
             await removeTask(task);
+            // success alert
+            setAlert({
+                show: true,
+                type: "success",
+                message: "Task aggiunta con successo"
+            })
+            // Navigate to home page 
             navigate('/');
         } catch (error) {
+            // error alert
             setAlert({
                 show: true,
                 type: "error",
@@ -39,6 +47,7 @@ function TaskDetail() {
         try {
             await updateTask(updatedTask);
             setShowUpdateModal(false);
+            // success alert
             setAlert({
                 show: true,
                 type: "success",
@@ -46,6 +55,7 @@ function TaskDetail() {
             });
             setTimeout(() => setAlert({ show: false }), 3000)
         } catch (error) {
+            // error alert
             setAlert({
                 show: true,
                 type: "error",

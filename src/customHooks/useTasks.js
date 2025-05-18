@@ -1,17 +1,27 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer } from "react";
+import tasksReducer from "../reducers/tasksReducer";
 const apiUrl = import.meta.env.VITE_API_URL
 
 function useTasks() {
-    const [tasks, setTasks] = useState([]);
+    const [tasks, dispatchTasks] = useReducer(tasksReducer, []);
 
     useEffect(() => {
         fetch(`${apiUrl}/tasks`)
             .then((res) => res.json())
-            .then((data) => setTasks(data))
+            .then((data) => dispatchTasks({ type: 'LOAD_TASKS', payload: data }))
             .catch((err) => console.error(err))
     }, [])
 
     const addTask = async (taskToAdd) => {
+        // Check if taskToAdd.title already exist
+        const titleExists = tasks.some((task) =>
+            task.title.toLowerCase() === taskToAdd.title.toLowerCase()
+        );
+        if (titleExists) {
+            throw new Error('Una task con questo titolo esiste già');
+        };
+
+        // Continue with POST method
         try {
             const res = await fetch(`${apiUrl}/tasks`, {
                 method: 'POST',
@@ -20,10 +30,38 @@ function useTasks() {
                 },
                 body: JSON.stringify(taskToAdd)
             });
+
             const data = await res.json();
 
             if (data.success) {
-                setTasks([...tasks, data.task]);
+                dispatchTasks({ type: 'ADD_TASK', payload: data.task });
+            } else {
+                throw new Error(data.message);
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    const updateTask = async (taskToUpdate) => {
+        // Check if taskToUpdate.title already exist && !== to himself
+        const titleExists = tasks.some((task) => task.id !== taskToUpdate.id && task.title.toLowerCase() === taskToUpdate.title.toLowerCase());
+        if (titleExists) {
+            throw new Error('Una task con questo titolo esiste già');
+        }
+
+        try {
+            const res = await fetch(`${apiUrl}/tasks/${taskToUpdate.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(taskToUpdate)
+            });
+            const data = await res.json();
+
+            if (data.success) {
+                dispatchTasks({ type: 'UPDATE_TASK', payload: data.task });
             } else {
                 throw new Error(data.message);
             }
@@ -40,28 +78,7 @@ function useTasks() {
             const data = await res.json();
 
             if (data.success) {
-                setTasks(tasks.filter((t) => t.id !== taskToRemove.id));
-            } else {
-                throw new Error(data.message);
-            }
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    const updateTask = async (taskToUpdate) => {
-        try {
-            const res = await fetch(`${apiUrl}/tasks/${taskToUpdate.id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(taskToUpdate)
-            });
-            const data = await res.json();
-
-            if (data.success) {
-                setTasks(tasks.map((t) => t.id === taskToUpdate.id ? data.task : t))
+                dispatchTasks({ type: 'REMOVE_TASK', payload: taskToRemove });
             } else {
                 throw new Error(data.message);
             }
@@ -93,7 +110,7 @@ function useTasks() {
         const fullfilledPromises = tasksToRemove.filter(id => !rejectedPromises.includes(id));
 
         // Update tasks state
-        setTasks(prev => prev.filter(task => !fullfilledPromises.includes(task.id)));
+        dispatchTasks({ type: 'REMOVE_MULTIPLE_TASKS', payload: fullfilledPromises });
 
         // If any deletions failed, throw error
         if (rejectedPromises.length > 0) {

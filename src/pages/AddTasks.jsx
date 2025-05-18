@@ -3,9 +3,11 @@ import Nav from "../components/Nav";
 import { GlobalContext } from '../contexts/GlobalContext';
 import styles from '../css/AddTasks.module.css';
 const symbols = `!@#$%^&*()-_=+[]{}|;:'\\",.<>?/"~`;
+import { useNavigate } from 'react-router-dom';
 
 function AddTask() {
     const { addTask } = useContext(GlobalContext);
+    const navigate = useNavigate();
 
     // States and Ref
     const [title, setTitle] = useState("");
@@ -51,13 +53,17 @@ function AddTask() {
                     type: "success",
                     message: "Task aggiunta con successo"
                 })
-                setTimeout(() => setAlert({ show: false }), 3000);
+                // Navigate to home page after short delay
+                setTimeout(() => {
+                    setAlert({ show: false });
+                    navigate('/');
+                }, 300);
             } catch (error) {
                 // error alert
                 setAlert({
                     show: true,
                     type: "error",
-                    message: "Errore nell'aggiunta della task"
+                    message: error.message
                 })
                 setTimeout(() => setAlert({ show: false }), 3000);
             };
